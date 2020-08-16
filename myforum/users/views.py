@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from .forms import UserForm
 from django.contrib.auth import logout
+from django.contrib.auth import authenticate, login
 # Create your views here.
 
 
@@ -9,8 +10,8 @@ def register(request):
         userform = UserForm(request.POST)
         if userform.is_valid():
             userform.save()
-            username = form.cleaned_data.get("username")
-            password = form.cleaned_data.get("password1")
+            username = userform.cleaned_data.get("username")
+            password = userform.cleaned_data.get("password1")
             user = authenticate(username=username, password=password)
             login(request, user)
             return redirect('forum')

@@ -4,6 +4,10 @@
         <a href="{% url 'topic_id' topic.id %}"><h1>{{ topic.title }}</h1></a>
         <p>{{ topic.posted }}</p>
         <p>{{ topic.autor }}</p>
-        <a href="{% url 'topic_delete' topic.id %}">Delete Topic</a>
+        {% if user.is_authenticated %}
+            {% if user.id is topic.autor.id %}
+            <a href="{% url 'topic_delete' topic.id %}">Delete Topic</a>
+            {% endif %}
+        {% endif %}
     {% endfor %}
 {% endblock %}

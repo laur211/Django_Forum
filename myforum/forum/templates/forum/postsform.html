@@ -8,13 +8,16 @@
 
     {% for post in posts %}
         <p>{{ post.title }}</p>
-        <a href="{% url 'post_delete' post.id %}">Delete</a>
+        {% if user.is_authenticated %}
+            <a href="{% url 'post_delete' post.id %}">Delete</a>
+        {% endif %}
     {% endfor %}
 
-
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Aplica</button>
-    </form>
+    {% if user.is_authenticated %}
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Aplica</button>
+        </form>
+    {% endif %}
 {% endblock %}

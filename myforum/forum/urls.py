@@ -5,5 +5,5 @@ urlpatterns = [
     path("topic/<int:id>/", views.postForm, name='topic_id'),
     path("new_post", views.topicForm, name="new_post"),
     path("topic/<int:id>/delete", views.topicDelete, name="topic_delete"),
-    path("/post/<int:post_id>/delete", views.postDelete, name="post_delete")
+    path("post/<int:post_id>/delete", views.postDelete, name="post_delete")
 ]
