@@ -1,9 +1,9 @@
 {% extends "forum/base.html" %}
     {% block content %}
-    {% for post in posts %}
-        <h1>{{ post.title }}</h1>
-        <p>{{ post.posted }}</p>
-        <h3>{{ post.content }}</h3>
-        <p>{{ post.autor }}</p>
+    {% for topic in topics %}
+        <a href="{% url 'topic_id' topic.id %}"><h1>{{ topic.title }}</h1></a>
+        <p>{{ topic.posted }}</p>
+        <p>{{ topic.autor }}</p>
+        <a href="{% url 'topic_delete' topic.id %}">Delete Topic</a>
     {% endfor %}
 {% endblock %}

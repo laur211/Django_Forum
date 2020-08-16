@@ -5,10 +5,8 @@ from .forms import ForumForm
 
 
 def forumView(request):
-    posts = TopicModel.objects.all()
-    print(request.user.id)
-    print(request.user.username)
-    return render (request, "forum/index.html", {"posts": posts})
+    topics = TopicModel.objects.all()
+    return render (request, "forum/index.html", {"topics": topics})
 
 
 def topicForm(request):
@@ -16,25 +14,33 @@ def topicForm(request):
         form = ForumForm(request.POST)
         if form.is_valid():
             title = form.cleaned_data.get("title")
-            content = form.cleaned_data.get("content")
-            TopicModel.objects.create (title=title, content=content, autor=request.user)
+            TopicModel.objects.create (title=title, autor=request.user)
             return redirect ("forum")
     else:
         form = ForumForm()
     return render(request, "forum/postsform.html", {"form": form})
 
 
-def postForm(request):
+def postForm(request, id):
     if request.method == "POST":
         form = ForumForm(request.POST)
         if form.is_valid():
             title = form.cleaned_data.get("title")
-            content = form.cleaned_data.get("content")
-            PostModel.objects.create (title=title, content=content, autor=request.user)
-            return redirect ("forum")
+            PostModel.objects.create (title=title, autor=request.user, topic=TopicModel.objects.get(id=id))
     else:
         form = ForumForm()
-    return render(request, "forum/postsform.html", {"form": form})
+    topics = TopicModel.objects.filter(id=id).values()
+    posts = PostModel.objects.filter(topic=TopicModel.objects.get(id=id))
+    return render(request, "forum/postsform.html", {"form": form, "topics": topics, "posts": posts})
 
 
+def topicDelete(request, id):
+    topic = TopicModel.objects.get(id=id)
+    topic.delete()
+    return redirect("forum")
 
+
+def postDelete(request, post_id):
+    post = PostModel.objects.get(id=post_id)
+    post.delete()
+    return redirect("forum")

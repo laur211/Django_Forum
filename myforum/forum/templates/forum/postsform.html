@@ -1,8 +1,20 @@
 {% extends "forum/base.html" %}
 {% block content %}
+   {% for topic in topics %}
+        <a href="{% url 'topic_id' topic.id %}"><h1>{{ topic.title }}</h1></a>
+        <p>{{ topic.autor }}</p>
+        <p> {{ topic.posts.title }} </p>
+    {% endfor %}
+
+    {% for post in posts %}
+        <p>{{ post.title }}</p>
+        <a href="{% url 'post_delete' post.id %}">Delete</a>
+    {% endfor %}
+
+
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit">Submit changes!</button>
+        <button type="submit">Aplica</button>
     </form>
 {% endblock %}
